@@ -6,6 +6,7 @@ import { TrendChart } from "../features/airport-detail/TrendChart";
 import { SourceTag } from "../components/SourceTag";
 import { StatusBadge } from "../components/StatusBadge";
 import { AnimatedNumber } from "../components/AnimatedNumber";
+import { ExplainSignal } from "../features/airport-detail/ExplainSignal";
 import { STATUS_COLOR } from "../utils/status";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
 import type { useTrafficSignals } from "../features/traffic/useTrafficSignals";
@@ -81,6 +82,17 @@ export function AirportDetail({ weather, traffic }: Props) {
             </li>
           ))}
         </ul>
+        <ExplainSignal
+          payload={{
+            iata: airport.iata,
+            city: airport.city,
+            score: signal.score,
+            status: signal.status,
+            drivers: signal.drivers,
+            weather: signal.weather,
+            traffic: signal.traffic,
+          }}
+        />
       </section>
 
       <section
