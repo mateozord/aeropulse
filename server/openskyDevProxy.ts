@@ -1,25 +1,23 @@
 import type { Plugin } from "vite";
 import { fetchBrazilStatesRaw } from "./openskyClient.ts";
+import { memoize } from "./memoize.ts";
+import { countAircraftByAirport } from "../src/utils/aggregateTraffic.ts";
+import type { OpenSkyResponse } from "../src/utils/aggregateTraffic.ts";
 
 // Anonymous OpenSky access grants 400 credits/day; caching keeps a real
 // site's traffic from burning through that budget on repeat visits.
-const CACHE_TTL_MS = 5 * 60 * 1000;
-
-let cache: { body: string; fetchedAt: number } | null = null;
-
-async function getBrazilTraffic(): Promise<string> {
-  if (cache && Date.now() - cache.fetchedAt < CACHE_TTL_MS) {
-    return cache.body;
-  }
-  const body = await fetchBrazilStatesRaw();
-  cache = { body, fetchedAt: Date.now() };
-  return body;
-}
+// Aggregates server-side so the response shape matches production
+// (netlify/functions/traffic.mts), which reads pre-aggregated counts from
+// Supabase instead — see that file for why it doesn't call OpenSky directly.
+const getTrafficCounts = memoize(async () => {
+  const raw = await fetchBrazilStatesRaw();
+  const { states } = JSON.parse(raw) as OpenSkyResponse;
+  return countAircraftByAirport(states ?? []);
+}, 5 * 60 * 1000);
 
 /**
  * OpenSky only sends CORS headers back to its own origin, so the browser
  * can't call it directly — this dev-only proxy calls it server-side instead.
- * A production deploy needs the same logic behind a serverless function (Fase 13).
  */
 export function openSkyDevProxy(): Plugin {
   return {
@@ -27,9 +25,9 @@ export function openSkyDevProxy(): Plugin {
     configureServer(server) {
       server.middlewares.use("/api/traffic", async (_req, res) => {
         try {
-          const body = await getBrazilTraffic();
+          const counts = await getTrafficCounts();
           res.setHeader("Content-Type", "application/json");
-          res.end(body);
+          res.end(JSON.stringify(counts));
         } catch (err) {
           res.statusCode = 502;
           res.setHeader("Content-Type", "application/json");

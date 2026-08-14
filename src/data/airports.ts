@@ -1,4 +1,4 @@
-import type { Airport } from "../types/airport";
+import type { Airport } from "../types/airport.ts";
 
 export const AIRPORTS: Airport[] = [
   { icao: "SBGR", iata: "GRU", name: "São Paulo/Guarulhos International", city: "São Paulo", lat: -23.4356, lon: -46.4731 },

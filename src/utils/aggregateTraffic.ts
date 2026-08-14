@@ -1,6 +1,6 @@
-import { AIRPORTS } from "../data/airports";
-import { haversineKm } from "./geo";
-import type { Airport } from "../types/airport";
+import { AIRPORTS } from "../data/airports.ts";
+import { haversineKm } from "./geo.ts";
+import type { Airport } from "../types/airport.ts";
 
 // Radius around each airport counted as "observed" traffic. Wide enough to
 // capture arrivals/departures on approach, not just aircraft on the ground.
