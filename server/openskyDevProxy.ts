@@ -1,8 +1,5 @@
 import type { Plugin } from "vite";
-
-// Covers Brazil + a margin so border-adjacent airports (e.g. POA) still
-// pick up nearby traffic. Costs 4 OpenSky credits per call (>400 sq°).
-const BBOX = { lamin: -33.75, lomin: -73.99, lamax: 5.27, lomax: -34.79 };
+import { fetchBrazilStatesRaw } from "./openskyClient.ts";
 
 // Anonymous OpenSky access grants 400 credits/day; caching keeps a real
 // site's traffic from burning through that budget on repeat visits.
@@ -14,14 +11,7 @@ async function getBrazilTraffic(): Promise<string> {
   if (cache && Date.now() - cache.fetchedAt < CACHE_TTL_MS) {
     return cache.body;
   }
-
-  const url = `https://opensky-network.org/api/states/all?lamin=${BBOX.lamin}&lomin=${BBOX.lomin}&lamax=${BBOX.lamax}&lomax=${BBOX.lomax}`;
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`OpenSky request failed with status ${response.status}`);
-  }
-
-  const body = await response.text();
+  const body = await fetchBrazilStatesRaw();
   cache = { body, fetchedAt: Date.now() };
   return body;
 }

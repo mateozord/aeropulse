@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { AIRPORTS } from "../data/airports";
 import { useAirportSignals } from "../features/signals/useAirportSignals";
+import { useAirportHistory } from "../features/airport-detail/useAirportHistory";
 import { TrendChart } from "../features/airport-detail/TrendChart";
-import { MockBadge } from "../components/MockBadge";
 import { SourceTag } from "../components/SourceTag";
 import { StatusBadge } from "../components/StatusBadge";
 import { STATUS_COLOR } from "../utils/status";
@@ -18,6 +18,8 @@ export function AirportDetail({ weather, traffic }: Props) {
   const { iata } = useParams<{ iata: string }>();
   const signals = useAirportSignals(weather, traffic);
   const airport = AIRPORTS.find((a) => a.iata === iata?.toUpperCase());
+  // Called unconditionally (Rules of Hooks) even if the airport code is invalid.
+  const history = useAirportHistory(airport?.iata ?? "");
 
   if (!airport) {
     return (
@@ -31,6 +33,8 @@ export function AirportDetail({ weather, traffic }: Props) {
   }
 
   const signal = signals[airport.iata];
+  const hasRealHistory = history.status === "ready" && history.points.length >= 2;
+  const trendTimeline = hasRealHistory ? history.points : signal.timeline;
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
@@ -77,10 +81,15 @@ export function AirportDetail({ weather, traffic }: Props) {
 
       <section className="mt-10 rounded-lg border border-border bg-surface p-6">
         <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-wider text-muted">Trend</p>
-          <MockBadge />
+          <div>
+            <p className="text-xs uppercase tracking-wider text-muted">Trend</p>
+            <p className="text-[11px] text-muted">
+              {hasRealHistory ? "Last 24h, captured every 30 min" : "Example forecast shape"}
+            </p>
+          </div>
+          <SourceTag source={hasRealHistory ? "live" : "mock"} label="History" />
         </div>
-        <TrendChart timeline={signal.timeline} status={signal.status} />
+        <TrendChart timeline={trendTimeline} status={signal.status} />
       </section>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
