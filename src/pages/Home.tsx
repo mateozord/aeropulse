@@ -7,6 +7,7 @@ import type { useTrafficSignals } from "../features/traffic/useTrafficSignals";
 import { useAirportSignals } from "../features/signals/useAirportSignals";
 import { StatusBadge } from "../components/StatusBadge";
 import { SyncCard } from "../components/SyncCard";
+import { AnimatedNumber } from "../components/AnimatedNumber";
 
 type Props = {
   weather: ReturnType<typeof useWeatherSignals>;
@@ -32,29 +33,49 @@ export function Home({ weather, traffic }: Props) {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
-      <p className="text-xs uppercase tracking-[0.3em] text-accent">Experimental Aviation Intelligence Platform</p>
-      <h1 className="mt-4 text-5xl font-semibold tracking-tight text-foreground md:text-7xl">
+      <p className="animate-fade-in-up text-xs uppercase tracking-[0.3em] text-accent">
+        Experimental Aviation Intelligence Platform
+      </p>
+      <h1
+        className="animate-fade-in-up mt-4 text-5xl font-semibold tracking-tight text-foreground md:text-7xl"
+        style={{ animationDelay: "60ms" }}
+      >
         AeroPulse
       </h1>
-      <p className="mt-2 text-2xl text-muted">Aviation Intelligence</p>
-      <p className="mt-6 max-w-xl text-lg text-muted">
+      <p className="animate-fade-in-up mt-2 text-2xl text-muted" style={{ animationDelay: "120ms" }}>
+        Aviation Intelligence
+      </p>
+      <p className="animate-fade-in-up mt-6 max-w-xl text-lg text-muted" style={{ animationDelay: "180ms" }}>
         Understand what's happening in the sky.
       </p>
 
       <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_280px]">
-        <div className="h-[560px] overflow-hidden rounded-lg border border-border">
+        <div
+          className="animate-fade-in-up h-[560px] overflow-hidden rounded-lg border border-border"
+          style={{ animationDelay: "240ms" }}
+        >
           <AirportMap statusByIata={statusByIata} selectedIata={selectedIata} onSelect={setSelectedIata} />
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="rounded-lg border border-border bg-surface p-5">
+          <div
+            className="animate-fade-in-up rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-border-strong"
+            style={{ animationDelay: "300ms" }}
+          >
             <p className="text-xs uppercase tracking-wider text-muted">Monitored airports</p>
-            <p className="mt-2 text-3xl font-semibold text-foreground">{AIRPORTS.length}</p>
+            <p className="mt-2 text-3xl font-semibold text-foreground">
+              <AnimatedNumber value={AIRPORTS.length} />
+            </p>
           </div>
 
-          <div className="rounded-lg border border-border bg-surface p-5">
+          <div
+            className="animate-fade-in-up rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-border-strong"
+            style={{ animationDelay: "360ms" }}
+          >
             <p className="text-xs uppercase tracking-wider text-muted">Needs attention</p>
-            <p className="mt-2 text-3xl font-semibold text-foreground">{attentionAirports.length}</p>
+            <p className="mt-2 text-3xl font-semibold text-foreground">
+              <AnimatedNumber value={attentionAirports.length} />
+            </p>
             {attentionAirports.length > 0 ? (
               <ul className="mt-3 space-y-2">
                 {attentionAirports.map((a) => (
@@ -62,7 +83,7 @@ export function Home({ weather, traffic }: Props) {
                     <button
                       type="button"
                       onClick={() => setSelectedIata(a.iata)}
-                      className="flex w-full items-center justify-between text-sm text-foreground hover:text-accent"
+                      className="flex w-full items-center justify-between text-sm text-foreground transition-colors hover:text-accent"
                     >
                       <span>{a.iata}</span>
                       <StatusBadge status={signals[a.iata].status} />
@@ -75,18 +96,22 @@ export function Home({ weather, traffic }: Props) {
             )}
           </div>
 
-          <SyncCard
-            title="Weather sync"
-            status={weather.status}
-            lastUpdated={weather.lastUpdated}
-            onRefresh={weather.sync}
-          />
-          <SyncCard
-            title="Traffic sync"
-            status={traffic.status}
-            lastUpdated={traffic.lastUpdated}
-            onRefresh={traffic.sync}
-          />
+          <div className="animate-fade-in-up" style={{ animationDelay: "420ms" }}>
+            <SyncCard
+              title="Weather sync"
+              status={weather.status}
+              lastUpdated={weather.lastUpdated}
+              onRefresh={weather.sync}
+            />
+          </div>
+          <div className="animate-fade-in-up" style={{ animationDelay: "480ms" }}>
+            <SyncCard
+              title="Traffic sync"
+              status={traffic.status}
+              lastUpdated={traffic.lastUpdated}
+              onRefresh={traffic.sync}
+            />
+          </div>
         </div>
       </div>
 

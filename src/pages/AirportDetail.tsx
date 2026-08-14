@@ -5,6 +5,7 @@ import { useAirportHistory } from "../features/airport-detail/useAirportHistory"
 import { TrendChart } from "../features/airport-detail/TrendChart";
 import { SourceTag } from "../components/SourceTag";
 import { StatusBadge } from "../components/StatusBadge";
+import { AnimatedNumber } from "../components/AnimatedNumber";
 import { STATUS_COLOR } from "../utils/status";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
 import type { useTrafficSignals } from "../features/traffic/useTrafficSignals";
@@ -38,21 +39,24 @@ export function AirportDetail({ weather, traffic }: Props) {
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
-      <Link to="/" className="text-sm text-muted hover:text-accent">
+      <Link to="/" className="text-sm text-muted transition-colors hover:text-accent">
         ← Overview
       </Link>
 
-      <div className="mt-6">
+      <div className="animate-fade-in-up mt-6">
         <p className="text-sm text-muted">{airport.city}</p>
         <h1 className="mt-1 text-6xl font-semibold tracking-tight text-foreground">{airport.iata}</h1>
         <p className="mt-1 text-muted">{airport.name}</p>
       </div>
 
-      <div className="mt-10 flex items-center justify-between rounded-lg border border-border bg-surface p-6">
+      <div
+        className="animate-fade-in-up mt-10 flex items-center justify-between rounded-lg border border-border bg-surface p-6"
+        style={{ animationDelay: "80ms" }}
+      >
         <div>
           <p className="text-xs uppercase tracking-wider text-muted">AeroPulse Score</p>
-          <p className="mt-1 text-6xl font-semibold text-foreground">
-            {signal.score}
+          <p className="mt-1 text-6xl font-semibold tabular-nums text-foreground">
+            <AnimatedNumber value={signal.score} />
             <span className="text-xl text-muted">/100</span>
           </p>
         </div>
@@ -64,7 +68,7 @@ export function AirportDetail({ weather, traffic }: Props) {
         </div>
       </div>
 
-      <section className="mt-6">
+      <section className="animate-fade-in-up mt-6" style={{ animationDelay: "140ms" }}>
         <p className="text-xs uppercase tracking-wider text-muted">Main drivers</p>
         <ul className="mt-2 space-y-1.5">
           {signal.drivers.map((driver) => (
@@ -79,7 +83,10 @@ export function AirportDetail({ weather, traffic }: Props) {
         </ul>
       </section>
 
-      <section className="mt-10 rounded-lg border border-border bg-surface p-6">
+      <section
+        className="animate-fade-in-up mt-10 rounded-lg border border-border bg-surface p-6"
+        style={{ animationDelay: "200ms" }}
+      >
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-wider text-muted">Trend</p>
@@ -93,7 +100,10 @@ export function AirportDetail({ weather, traffic }: Props) {
       </section>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="rounded-lg border border-border bg-surface p-6">
+        <div
+          className="animate-fade-in-up rounded-lg border border-border bg-surface p-6"
+          style={{ animationDelay: "260ms" }}
+        >
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-wider text-muted">Weather</p>
             <SourceTag source={signal.weather.source} label="Open-Meteo" />
@@ -114,7 +124,10 @@ export function AirportDetail({ weather, traffic }: Props) {
           </dl>
         </div>
 
-        <div className="rounded-lg border border-border bg-surface p-6">
+        <div
+          className="animate-fade-in-up rounded-lg border border-border bg-surface p-6"
+          style={{ animationDelay: "320ms" }}
+        >
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-wider text-muted">Air traffic</p>
             <SourceTag source={signal.traffic.source} label="OpenSky" />

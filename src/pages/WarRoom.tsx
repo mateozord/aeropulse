@@ -4,6 +4,7 @@ import { AIRPORTS } from "../data/airports";
 import { AirportMap } from "../features/map/AirportMap";
 import { LiveClock } from "../features/war-room/LiveClock";
 import { StatusBadge } from "../components/StatusBadge";
+import { AnimatedNumber } from "../components/AnimatedNumber";
 import { useAirportSignals } from "../features/signals/useAirportSignals";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
 import type { useTrafficSignals } from "../features/traffic/useTrafficSignals";
@@ -63,11 +64,16 @@ export function WarRoom({ weather, traffic }: Props) {
               live ? "text-accent" : "text-attention"
             }`}
           >
-            <span className={`h-1.5 w-1.5 rounded-full ${live ? "bg-accent" : "bg-attention"}`} />
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${live ? "animate-breathe bg-accent" : "bg-attention"}`}
+            />
             {live ? "Live signal" : "Mock data"}
           </span>
           <LiveClock />
-          <Link to="/" className="text-xs uppercase tracking-wider text-muted hover:text-foreground">
+          <Link
+            to="/"
+            className="text-xs uppercase tracking-wider text-muted transition-colors hover:text-foreground"
+          >
             Exit
           </Link>
         </div>
@@ -82,12 +88,16 @@ export function WarRoom({ weather, traffic }: Props) {
         <aside className="flex w-80 shrink-0 flex-col gap-6 overflow-y-auto border-l border-border p-6">
           <div>
             <p className="text-xs uppercase tracking-wider text-muted">Monitored airports</p>
-            <p className="mt-1 font-mono text-3xl text-foreground">{AIRPORTS.length}</p>
+            <p className="mt-1 font-mono text-3xl tabular-nums text-foreground">
+              <AnimatedNumber value={AIRPORTS.length} />
+            </p>
           </div>
 
           <div>
             <p className="text-xs uppercase tracking-wider text-muted">Observed aircraft</p>
-            <p className="mt-1 font-mono text-3xl text-foreground">{totalObserved}</p>
+            <p className="mt-1 font-mono text-3xl tabular-nums text-foreground">
+              <AnimatedNumber value={totalObserved} />
+            </p>
           </div>
 
           <div className="border-t border-border pt-6">
@@ -103,7 +113,7 @@ export function WarRoom({ weather, traffic }: Props) {
                     <button
                       type="button"
                       onClick={() => goToAirport(a.iata)}
-                      className="flex w-full items-center justify-between text-sm text-foreground hover:text-accent"
+                      className="flex w-full items-center justify-between text-sm text-foreground transition-colors hover:text-accent"
                     >
                       <span>{a.iata}</span>
                       <StatusBadge status={signals[a.iata].status} />
@@ -141,11 +151,15 @@ export function WarRoom({ weather, traffic }: Props) {
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-lg border border-border bg-surface p-4">
             <p className="text-xs uppercase tracking-wider text-muted">Airports</p>
-            <p className="mt-1 font-mono text-2xl text-foreground">{AIRPORTS.length}</p>
+            <p className="mt-1 font-mono text-2xl tabular-nums text-foreground">
+              <AnimatedNumber value={AIRPORTS.length} />
+            </p>
           </div>
           <div className="rounded-lg border border-border bg-surface p-4">
             <p className="text-xs uppercase tracking-wider text-muted">Aircraft</p>
-            <p className="mt-1 font-mono text-2xl text-foreground">{totalObserved}</p>
+            <p className="mt-1 font-mono text-2xl tabular-nums text-foreground">
+              <AnimatedNumber value={totalObserved} />
+            </p>
           </div>
         </div>
 
@@ -156,7 +170,7 @@ export function WarRoom({ weather, traffic }: Props) {
               <button
                 type="button"
                 onClick={() => goToAirport(a.iata)}
-                className="flex w-full items-center justify-between rounded border border-border bg-surface px-4 py-3 text-sm text-foreground"
+                className="flex w-full items-center justify-between rounded border border-border bg-surface px-4 py-3 text-sm text-foreground transition-colors active:bg-surface-raised"
               >
                 <span className="font-mono">{a.iata}</span>
                 <StatusBadge status={signals[a.iata].status} />

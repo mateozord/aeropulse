@@ -43,7 +43,9 @@ export function Header({ live }: { live: boolean }) {
               live ? "text-accent" : "text-attention"
             }`}
           >
-            <span className={`h-1.5 w-1.5 rounded-full ${live ? "bg-accent" : "bg-attention"}`} />
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${live ? "animate-breathe bg-accent" : "bg-attention"}`}
+            />
             {live ? "Live" : "Mock data"}
           </div>
 

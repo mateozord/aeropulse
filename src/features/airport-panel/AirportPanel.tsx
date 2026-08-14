@@ -3,6 +3,7 @@ import type { Airport } from "../../types/airport";
 import type { AirportSignal } from "../../types/signal";
 import type { WeatherSyncStatus } from "../weather/useWeatherSignals";
 import type { TrafficSyncStatus } from "../traffic/useTrafficSignals";
+import { AnimatedNumber } from "../../components/AnimatedNumber";
 import { MockBadge } from "../../components/MockBadge";
 import { SourceTag } from "../../components/SourceTag";
 import { StatusBadge } from "../../components/StatusBadge";
@@ -42,7 +43,7 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
             <button
               type="button"
               onClick={onClose}
-              className="rounded border border-border px-2 py-1 text-xs text-muted hover:text-foreground"
+              className="rounded border border-border px-2 py-1 text-xs text-muted transition-colors hover:border-border-strong hover:text-foreground"
               aria-label="Close panel"
             >
               Close
@@ -52,8 +53,8 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
           <div className="mt-8 flex items-center justify-between">
             <div>
               <p className="text-xs uppercase tracking-wider text-muted">AeroPulse</p>
-              <p className="text-5xl font-semibold text-foreground">
-                {signal.score}
+              <p className="text-5xl font-semibold tabular-nums text-foreground">
+                <AnimatedNumber value={signal.score} />
                 <span className="text-lg text-muted">/100</span>
               </p>
             </div>

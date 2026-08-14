@@ -11,13 +11,13 @@ type Props = {
 
 export function SyncCard({ title, status, lastUpdated, onRefresh }: Props) {
   return (
-    <div className="rounded-lg border border-border bg-surface p-5">
+    <div className="rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-border-strong">
       <p className="text-xs uppercase tracking-wider text-muted">{title}</p>
       {status === "syncing" && !lastUpdated && (
         <p className="mt-2 text-lg font-medium text-accent">Syncing live data…</p>
       )}
       {lastUpdated && (
-        <p className="mt-2 text-3xl font-semibold text-foreground">{formatTime(lastUpdated)}</p>
+        <p className="mt-2 text-3xl font-semibold tabular-nums text-foreground">{formatTime(lastUpdated)}</p>
       )}
       {status === "error" && !lastUpdated && (
         <p className="mt-2 text-sm font-medium text-elevated">Data source temporarily unavailable</p>
@@ -26,7 +26,7 @@ export function SyncCard({ title, status, lastUpdated, onRefresh }: Props) {
         type="button"
         onClick={onRefresh}
         disabled={status === "syncing"}
-        className="mt-3 text-xs uppercase tracking-wider text-muted hover:text-accent disabled:opacity-50"
+        className="mt-3 text-xs uppercase tracking-wider text-muted transition-colors hover:text-accent disabled:opacity-50"
       >
         {status === "syncing" ? "Syncing…" : "Refresh"}
       </button>
