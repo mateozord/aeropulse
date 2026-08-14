@@ -17,7 +17,7 @@ export function AirportMarker({ status, iata, active, onClick }: Props) {
       type="button"
       onClick={onClick}
       aria-label={`${iata} — ${status}`}
-      className="group relative flex h-6 w-6 items-center justify-center"
+      className="group relative flex h-11 w-11 items-center justify-center"
     >
       {urgent && (
         <span
@@ -32,7 +32,7 @@ export function AirportMarker({ status, iata, active, onClick }: Props) {
           boxShadow: active ? `0 0 0 4px ${color}33` : undefined,
         }}
       />
-      <span className="pointer-events-none absolute top-4 whitespace-nowrap rounded bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-muted opacity-0 shadow transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none absolute top-7 whitespace-nowrap rounded bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-muted opacity-0 shadow transition-opacity group-hover:opacity-100">
         {iata}
       </span>
     </button>

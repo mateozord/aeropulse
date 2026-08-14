@@ -17,5 +17,19 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       exclude: ['maplibre-gl'],
     },
+    build: {
+      rollupOptions: {
+        output: {
+          // The maplibre-gl worker (?worker&url) throws off Rollup's default
+          // chunk splitting, pulling all of maplibre-gl into the main entry
+          // chunk instead of its own lazy-shared chunk — force it back out.
+          manualChunks(id) {
+            if (id.includes('node_modules/maplibre-gl') || id.includes('node_modules/react-map-gl')) {
+              return 'maplibre-gl'
+            }
+          },
+        },
+      },
+    },
   }
 })

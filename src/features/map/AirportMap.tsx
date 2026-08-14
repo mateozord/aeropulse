@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Map, Marker } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
+import "./maplibreWorkerSetup";
 import { AIRPORTS } from "../../data/airports";
 import type { AeroPulseStatus } from "../../types/airport";
 import { DARK_MAP_STYLE } from "./mapStyle";
