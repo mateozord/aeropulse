@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import type { ExplainPayload } from "../src/types/explain.ts";
 
 // "-latest" alias so this keeps working as Google rotates the underlying

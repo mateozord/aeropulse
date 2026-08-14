@@ -3,7 +3,7 @@
 **Experimental Aviation Intelligence Platform** — cross-references live weather, observed air
 traffic, and historical trends for major Brazilian airports into a transparent, explainable signal.
 
-🔗 **Live:** [majestic-dodol-fc3c9f.netlify.app](https://majestic-dodol-fc3c9f.netlify.app)
+🔗 **Live:** [aeropulse-eight.vercel.app](https://aeropulse-eight.vercel.app)
 
 ![AeroPulse home screen — map of Brazil with monitored airports](docs/screenshots/home.png)
 
@@ -45,7 +45,7 @@ Gemini      ─┘                                    └─ AI Explain Signal
   past serverless function time limits when called from cloud IP ranges. A GitHub Actions job
   captures weather + traffic + score for every airport every 30 minutes into Supabase; the site
   reads the latest snapshot instead of calling OpenSky live.
-- **AI explanation** — a Netlify Function forwards the *already-computed* score/drivers/weather to
+- **AI explanation** — a Vercel Function forwards the *already-computed* score/drivers/weather to
   Gemini and returns 2–4 sentences of plain-language explanation. The model is instructed to explain
   only the given data — never to invent a driver or predict operations.
 - No traditional backend/database server — just a static React app, two small serverless functions,
@@ -74,7 +74,7 @@ Full writeup, including status bands, lives on the site's `/methodology` page.
 ## Tech stack
 
 Vite · React · TypeScript · Tailwind CSS v4 · MapLibre GL JS · Recharts · Supabase · GitHub Actions
-· Netlify Functions · Google Gemini API
+· Vercel Functions · Google Gemini API
 
 Chosen by problem, not by popularity — see the data sources table above for why each one is there.
 
@@ -102,8 +102,8 @@ breaking.
 - Air traffic is a count of aircraft within 50km of an airport, not verified arrivals/departures.
 - History only goes back to when the GitHub Action started running — trend charts before that show
   an illustrative example shape instead, clearly labeled as mock.
-- Anonymous OpenSky access has a daily credit budget; if it's exhausted, traffic falls back to the
-  last known snapshot rather than failing.
+- Traffic numbers are as fresh as the last GitHub Actions snapshot (≤30 min), not instant — OpenSky
+  stalls when called directly from serverless functions, so the site reads Supabase instead.
 
 ## Roadmap
 
