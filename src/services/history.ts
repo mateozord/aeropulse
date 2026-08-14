@@ -7,6 +7,8 @@ function formatLabel(iso: string) {
 
 /** Real score history for one airport over the last `hours`, oldest first. */
 export async function fetchScoreHistory(iata: string, hours = 24): Promise<TrendPoint[]> {
+  if (!supabase) throw new Error("Supabase is not configured");
+
   const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
 
   const { data, error } = await supabase
