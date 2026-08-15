@@ -1,11 +1,22 @@
-function Factor({ title, points, description }: { title: string; points: string; description: string }) {
+function Factor({
+  title,
+  maxPoints,
+  description,
+}: {
+  title: string;
+  maxPoints: number;
+  description: string;
+}) {
   return (
     <div className="border-t border-border py-6">
       <div className="flex items-baseline justify-between">
         <p className="text-lg font-medium text-foreground">{title}</p>
-        <p className="text-sm text-muted">{points}</p>
+        <p className="text-sm text-muted">até {maxPoints} pts</p>
       </div>
-      <p className="mt-2 max-w-2xl text-sm text-muted">{description}</p>
+      <div className="mt-3 h-1.5 w-full max-w-2xl overflow-hidden rounded-full bg-border">
+        <div className="h-full rounded-full bg-accent-dim" style={{ width: `${maxPoints}%` }} />
+      </div>
+      <p className="mt-3 max-w-2xl text-sm text-muted">{description}</p>
     </div>
   );
 }
@@ -42,18 +53,18 @@ export function Methodology() {
       <div>
         <Factor
           title="Chance de chuva"
-          points="até 40 pts"
+          maxPoints={40}
           description="Escala diretamente com a probabilidade de chuva informada para a hora atual (Open-Meteo). 100% de chance contribui com os 40 pontos completos."
         />
         <Factor
           title="Velocidade do vento"
-          points="até 35 pts"
+          maxPoints={35}
           description="Nenhuma contribuição abaixo de 20 km/h. Acima disso, os pontos escalam com a velocidade e chegam ao limite de 35 quando o vento atinge cerca de 40 km/h."
         />
         <Factor
           title="Visibilidade"
-          points="0 / 15 / 35 pts"
-          description="Visibilidade boa não contribui nada, Moderada soma 15 pontos, Ruim soma 35."
+          maxPoints={35}
+          description="Visibilidade boa não contribui nada, Moderada soma 15 pontos, Ruim soma 35 (0 / 15 / 35 pts)."
         />
       </div>
 

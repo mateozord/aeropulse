@@ -21,18 +21,24 @@ export function AirportMarker({ status, iata, active, onClick }: Props) {
     >
       {urgent && (
         <span
-          className="absolute h-3.5 w-3.5 animate-ping rounded-full opacity-40"
+          className="animate-pulse-ring absolute h-2.5 w-2.5 rounded-full"
           style={{ backgroundColor: color }}
         />
       )}
       <span
-        className="relative h-2.5 w-2.5 rounded-full transition-[transform,background-color,box-shadow] duration-300 group-hover:scale-125"
+        className={`relative h-2.5 w-2.5 rounded-full transition-[transform,box-shadow] duration-300 group-hover:scale-125 ${
+          active ? "scale-125" : ""
+        }`}
         style={{
           backgroundColor: color,
-          boxShadow: active ? `0 0 0 4px ${color}33` : undefined,
+          boxShadow: active ? `0 0 0 3px var(--color-base), 0 0 0 5px ${color}` : undefined,
         }}
       />
-      <span className="pointer-events-none absolute top-7 whitespace-nowrap rounded bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-muted opacity-0 shadow transition-opacity group-hover:opacity-100">
+      <span
+        className={`pointer-events-none absolute top-7 whitespace-nowrap rounded border border-border-strong bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium shadow transition-opacity ${
+          active ? "text-foreground opacity-100" : "text-muted opacity-0 group-hover:opacity-100 group-hover:text-foreground"
+        }`}
+      >
         {iata}
       </span>
     </button>

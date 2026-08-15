@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Map, Marker } from "react-map-gl/maplibre";
+import { useEffect, useRef, useState } from "react";
+import { Map, Marker, type MapRef } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./maplibreWorkerSetup";
 import { AIRPORTS } from "../../data/airports";
@@ -15,10 +15,19 @@ type Props = {
 
 export function AirportMap({ statusByIata, selectedIata, onSelect }: Props) {
   const [tilesUnavailable, setTilesUnavailable] = useState(false);
+  const mapRef = useRef<MapRef>(null);
+
+  useEffect(() => {
+    if (!selectedIata) return;
+    const airport = AIRPORTS.find((a) => a.iata === selectedIata);
+    if (!airport) return;
+    mapRef.current?.flyTo({ center: [airport.lon, airport.lat], zoom: 6, duration: 800 });
+  }, [selectedIata]);
 
   return (
     <div className="relative h-full w-full">
       <Map
+        ref={mapRef}
         initialViewState={{ longitude: -51, latitude: -14, zoom: 3.4 }}
         minZoom={2.5}
         maxZoom={8}
@@ -41,7 +50,7 @@ export function AirportMap({ statusByIata, selectedIata, onSelect }: Props) {
 
       {tilesUnavailable && (
         <div className="pointer-events-none absolute left-3 top-3 rounded border border-border bg-surface-raised px-3 py-1.5 text-xs text-attention">
-          Map data source temporarily unavailable
+          Fonte de dados do mapa temporariamente indisponível
         </div>
       )}
     </div>

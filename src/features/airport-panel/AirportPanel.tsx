@@ -7,6 +7,7 @@ import { AnimatedNumber } from "../../components/AnimatedNumber";
 import { MockBadge } from "../../components/MockBadge";
 import { SourceTag } from "../../components/SourceTag";
 import { StatusBadge } from "../../components/StatusBadge";
+import { ScoreBreakdown } from "../../components/ScoreBreakdown";
 import { STATUS_COLOR, TREND_LABEL_PT, VISIBILITY_LABEL_PT } from "../../utils/status";
 
 type Props = {
@@ -65,6 +66,7 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
               </div>
             </div>
           </div>
+          <ScoreBreakdown signal={signal} />
 
           <section className="mt-8">
             <p className="text-xs uppercase tracking-wider text-muted">Principais fatores</p>

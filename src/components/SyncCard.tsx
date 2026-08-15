@@ -11,24 +11,26 @@ type Props = {
 
 export function SyncCard({ title, status, lastUpdated, onRefresh }: Props) {
   return (
-    <div className="rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-border-strong">
-      <p className="text-xs uppercase tracking-wider text-muted">{title}</p>
-      {status === "syncing" && !lastUpdated && (
-        <p className="mt-2 text-lg font-medium text-accent">Sincronizando dados ao vivo…</p>
-      )}
-      {lastUpdated && (
-        <p className="mt-2 text-3xl font-semibold tabular-nums text-foreground">{formatTime(lastUpdated)}</p>
-      )}
-      {status === "error" && !lastUpdated && (
-        <p className="mt-2 text-sm font-medium text-elevated">Fonte de dados temporariamente indisponível</p>
-      )}
+    <div className="flex items-center justify-between gap-4">
+      <div>
+        <p className="text-xs uppercase tracking-wider text-muted">{title}</p>
+        {status === "syncing" && !lastUpdated && (
+          <p className="mt-1 text-sm font-medium text-accent">Sincronizando…</p>
+        )}
+        {lastUpdated && (
+          <p className="mt-1 font-mono text-lg tabular-nums text-foreground">{formatTime(lastUpdated)}</p>
+        )}
+        {status === "error" && !lastUpdated && (
+          <p className="mt-1 text-sm font-medium text-elevated">Indisponível</p>
+        )}
+      </div>
       <button
         type="button"
         onClick={onRefresh}
         disabled={status === "syncing"}
-        className="mt-3 text-xs uppercase tracking-wider text-muted transition-colors hover:text-accent disabled:opacity-50"
+        className="shrink-0 text-xs uppercase tracking-wider text-muted transition-colors hover:text-accent disabled:opacity-50"
       >
-        {status === "syncing" ? "Sincronizando…" : "Atualizar"}
+        {status === "syncing" ? "…" : "Atualizar"}
       </button>
     </div>
   );

@@ -5,6 +5,7 @@ import { useAirportHistory } from "../features/airport-detail/useAirportHistory"
 import { TrendChart } from "../features/airport-detail/TrendChart";
 import { SourceTag } from "../components/SourceTag";
 import { StatusBadge } from "../components/StatusBadge";
+import { ScoreBreakdown } from "../components/ScoreBreakdown";
 import { AnimatedNumber } from "../components/AnimatedNumber";
 import { ExplainSignal } from "../features/airport-detail/ExplainSignal";
 import { STATUS_COLOR, VISIBILITY_LABEL_PT } from "../utils/status";
@@ -51,22 +52,25 @@ export function AirportDetail({ weather, traffic }: Props) {
       </div>
 
       <div
-        className="animate-fade-in-up mt-10 flex items-center justify-between rounded-lg border border-border bg-surface p-6"
+        className="animate-fade-in-up mt-10 rounded-lg border border-border bg-surface p-6"
         style={{ animationDelay: "80ms" }}
       >
-        <div>
-          <p className="text-xs uppercase tracking-wider text-muted">Score AeroPulse</p>
-          <p className="mt-1 text-6xl font-semibold tabular-nums text-foreground">
-            <AnimatedNumber value={signal.score} />
-            <span className="text-xl text-muted">/100</span>
-          </p>
-        </div>
-        <div className="text-right">
-          <StatusBadge status={signal.status} />
-          <div className="mt-2">
-            <SourceTag source={signal.weather.source} label="AeroPulse Engine" />
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-muted">Score AeroPulse</p>
+            <p className="mt-1 text-6xl font-semibold tabular-nums text-foreground">
+              <AnimatedNumber value={signal.score} />
+              <span className="text-xl text-muted">/100</span>
+            </p>
+          </div>
+          <div className="text-right">
+            <StatusBadge status={signal.status} />
+            <div className="mt-2">
+              <SourceTag source={signal.weather.source} label="AeroPulse Engine" />
+            </div>
           </div>
         </div>
+        <ScoreBreakdown signal={signal} />
       </div>
 
       <section className="animate-fade-in-up mt-6" style={{ animationDelay: "140ms" }}>

@@ -4,6 +4,7 @@ import { AIRPORTS } from "../data/airports";
 import { AirportMap } from "../features/map/AirportMap";
 import { LiveClock } from "../features/war-room/LiveClock";
 import { StatusBadge } from "../components/StatusBadge";
+import { SystemNominal } from "../components/SystemNominal";
 import { AnimatedNumber } from "../components/AnimatedNumber";
 import { useAirportSignals } from "../features/signals/useAirportSignals";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
@@ -45,6 +46,14 @@ export function WarRoom({ weather, traffic }: Props) {
         .flatMap((a) => signals[a.iata].drivers.map((driver) => `${a.iata} — ${driver}`))
         .slice(0, 6),
     [attentionAirports, signals],
+  );
+
+  const topObserved = useMemo(
+    () =>
+      [...AIRPORTS]
+        .sort((a, b) => signals[b.iata].traffic.observedAircraft - signals[a.iata].traffic.observedAircraft)
+        .slice(0, 3),
+    [signals],
   );
 
   const goToAirport = (iata: string) => navigate(`/airports/${iata}`);
@@ -105,7 +114,9 @@ export function WarRoom({ weather, traffic }: Props) {
               Aeroportos em atenção ({attentionAirports.length})
             </p>
             {attentionAirports.length === 0 ? (
-              <p className="mt-2 text-sm text-muted">Nenhum no momento.</p>
+              <div className="mt-3">
+                <SystemNominal />
+              </div>
             ) : (
               <ul className="mt-3 space-y-2">
                 {attentionAirports.map((a) => (
@@ -113,10 +124,15 @@ export function WarRoom({ weather, traffic }: Props) {
                     <button
                       type="button"
                       onClick={() => goToAirport(a.iata)}
-                      className="flex w-full items-center justify-between text-sm text-foreground transition-colors hover:text-accent"
+                      className="flex w-full items-center gap-3 text-sm text-foreground transition-colors hover:text-accent"
                     >
-                      <span>{a.iata}</span>
-                      <StatusBadge status={signals[a.iata].status} />
+                      <span className="w-9 shrink-0 font-mono">{a.iata}</span>
+                      <span className="w-7 shrink-0 font-mono tabular-nums text-muted">
+                        {signals[a.iata].score}
+                      </span>
+                      <span className="ml-auto">
+                        <StatusBadge status={signals[a.iata].status} />
+                      </span>
                     </button>
                   </li>
                 ))}
@@ -125,14 +141,25 @@ export function WarRoom({ weather, traffic }: Props) {
           </div>
 
           <div className="border-t border-border pt-6">
-            <p className="text-xs uppercase tracking-wider text-muted">Principais sinais</p>
-            {mainSignals.length === 0 ? (
-              <p className="mt-2 text-sm text-muted">Nenhum sinal elevado detectado.</p>
-            ) : (
+            <p className="text-xs uppercase tracking-wider text-muted">
+              {attentionAirports.length > 0 ? "Principais sinais" : "Maior tráfego observado"}
+            </p>
+            {attentionAirports.length > 0 ? (
               <ul className="mt-3 space-y-1.5">
                 {mainSignals.map((line) => (
                   <li key={line} className="text-sm text-foreground">
                     {line}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ul className="mt-3 space-y-1.5">
+                {topObserved.map((a) => (
+                  <li key={a.iata} className="flex items-center justify-between text-sm text-foreground">
+                    <span className="font-mono">{a.iata}</span>
+                    <span className="text-muted">
+                      {signals[a.iata].traffic.observedAircraft} aeronaves
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -170,10 +197,13 @@ export function WarRoom({ weather, traffic }: Props) {
               <button
                 type="button"
                 onClick={() => goToAirport(a.iata)}
-                className="flex w-full items-center justify-between rounded border border-border bg-surface px-4 py-3 text-sm text-foreground transition-colors active:bg-surface-raised"
+                className="flex w-full items-center gap-3 rounded border border-border bg-surface px-4 py-3 text-sm text-foreground transition-colors active:bg-surface-raised"
               >
-                <span className="font-mono">{a.iata}</span>
-                <StatusBadge status={signals[a.iata].status} />
+                <span className="w-9 shrink-0 font-mono">{a.iata}</span>
+                <span className="w-7 shrink-0 font-mono tabular-nums text-muted">{signals[a.iata].score}</span>
+                <span className="ml-auto">
+                  <StatusBadge status={signals[a.iata].status} />
+                </span>
               </button>
             </li>
           ))}
