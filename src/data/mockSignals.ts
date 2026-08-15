@@ -19,7 +19,7 @@ function signal(
     weather: fullWeather,
     traffic: { observedAircraft, source: "mock" },
     trend,
-    timeline: ["NOW", "+3h", "+6h", "+12h"].map((label, i) => ({ label, value: timeline[i] })),
+    timeline: ["AGORA", "+3h", "+6h", "+12h"].map((label, i) => ({ label, value: timeline[i] })),
   };
 }
 

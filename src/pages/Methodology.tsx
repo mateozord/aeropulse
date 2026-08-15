@@ -13,65 +13,66 @@ function Factor({ title, points, description }: { title: string; points: string;
 export function Methodology() {
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
-      <p className="text-xs uppercase tracking-[0.3em] text-accent">How it works</p>
-      <h1 className="mt-4 text-4xl font-semibold text-foreground">AeroPulse Score</h1>
+      <p className="text-xs uppercase tracking-[0.3em] text-accent">Como funciona</p>
+      <h1 className="mt-4 text-4xl font-semibold text-foreground">Score AeroPulse</h1>
       <p className="mt-4 text-muted">
-        The AeroPulse Score is an experimental 0–100 signal computed by this app from weather
-        conditions. It is not an official aviation indicator, and it does not predict delays,
-        cancellations, or real airline operations. Treat it as a starting point for curiosity, not
-        a source of truth.
+        O Score AeroPulse é um sinal experimental de 0 a 100 calculado por este app a partir das
+        condições climáticas. Não é um indicador oficial de aviação, e não prevê atrasos,
+        cancelamentos ou operações reais de companhias aéreas. Encare como um ponto de partida para
+        curiosidade, não como uma fonte de verdade.
       </p>
 
       <div className="mt-10 rounded-lg border border-border bg-surface p-5">
-        <p className="text-xs uppercase tracking-wider text-muted">Status bands</p>
+        <p className="text-xs uppercase tracking-wider text-muted">Faixas de status</p>
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div><p className="text-normal font-semibold">NORMAL</p><p className="text-xs text-muted">0–29</p></div>
-          <div><p className="text-attention font-semibold">ATTENTION</p><p className="text-xs text-muted">30–49</p></div>
-          <div><p className="text-elevated font-semibold">ELEVATED</p><p className="text-xs text-muted">50–69</p></div>
-          <div><p className="text-high font-semibold">HIGH</p><p className="text-xs text-muted">70–100</p></div>
+          <div><p className="text-attention font-semibold">ATENÇÃO</p><p className="text-xs text-muted">30–49</p></div>
+          <div><p className="text-elevated font-semibold">ELEVADO</p><p className="text-xs text-muted">50–69</p></div>
+          <div><p className="text-high font-semibold">ALTO</p><p className="text-xs text-muted">70–100</p></div>
         </div>
       </div>
 
-      <h2 className="mt-12 text-xl font-semibold text-foreground">What goes into the score (v1)</h2>
+      <h2 className="mt-12 text-xl font-semibold text-foreground">O que compõe o score (v1)</h2>
       <p className="mt-2 text-sm text-muted">
-        Version 1 is weather-only. Each factor contributes points up to its own cap, so no single
-        factor can dominate the score by itself — and the app always lists which factors actually
-        fired as "main drivers".
+        A versão 1 usa só o clima. Cada fator contribui com pontos até um limite próprio, então
+        nenhum fator sozinho domina o score — e o app sempre lista quais fatores realmente entraram
+        em ação como "principais fatores".
       </p>
 
       <div>
         <Factor
-          title="Precipitation chance"
-          points="up to 40 pts"
-          description="Scales directly with the rain probability reported for the current hour (Open-Meteo). 100% chance contributes the full 40 points."
+          title="Chance de chuva"
+          points="até 40 pts"
+          description="Escala diretamente com a probabilidade de chuva informada para a hora atual (Open-Meteo). 100% de chance contribui com os 40 pontos completos."
         />
         <Factor
-          title="Wind speed"
-          points="up to 35 pts"
-          description="No contribution below 20 km/h. Above that, points scale with speed and cap at 35 once wind reaches roughly 40 km/h."
+          title="Velocidade do vento"
+          points="até 35 pts"
+          description="Nenhuma contribuição abaixo de 20 km/h. Acima disso, os pontos escalam com a velocidade e chegam ao limite de 35 quando o vento atinge cerca de 40 km/h."
         />
         <Factor
-          title="Visibility"
+          title="Visibilidade"
           points="0 / 15 / 35 pts"
-          description="Good visibility contributes nothing, Moderate adds 15 points, Poor adds 35."
+          description="Visibilidade boa não contribui nada, Moderada soma 15 pontos, Ruim soma 35."
         />
       </div>
 
-      <h2 className="mt-12 text-xl font-semibold text-foreground">What's deliberately left out</h2>
+      <h2 className="mt-12 text-xl font-semibold text-foreground">O que ficou de fora de propósito</h2>
       <p className="mt-2 text-sm text-muted">
-        Observed air traffic (via OpenSky) is shown in every airport panel as real, live data — but
-        it is not part of the score yet. A raw aircraft count is meaningless without knowing what's
-        normal for that specific airport: Guarulhos is busy on an ordinary Tuesday in a way Santos
-        Dumont never is. Folding traffic into the score requires a historical baseline per airport,
-        which AeroPulse doesn't have yet (that's a future phase). Trend (rising/falling/stable) is
-        still illustrative/mock for the same reason — it needs history to be real.
+        O tráfego aéreo observado (via OpenSky) aparece em todo painel de aeroporto como dado real,
+        ao vivo — mas ainda não faz parte do score. Um número bruto de aeronaves não significa nada
+        sem saber o que é normal para aquele aeroporto específico: Guarulhos é movimentado numa
+        terça-feira comum de um jeito que Santos Dumont nunca é. Incluir o tráfego no score exige uma
+        base histórica por aeroporto, que o AeroPulse ainda não tem (isso é uma fase futura). A
+        tendência (subindo/caindo/estável) ainda é ilustrativa/simulada pelo mesmo motivo — precisa
+        de histórico para ser real.
       </p>
 
-      <h2 className="mt-12 text-xl font-semibold text-foreground">Data sources</h2>
+      <h2 className="mt-12 text-xl font-semibold text-foreground">Fontes de dados</h2>
       <ul className="mt-2 space-y-1 text-sm text-muted">
-        <li>Weather — <span className="text-foreground">Open-Meteo</span> (open data, CC-BY 4.0)</li>
-        <li>Air traffic — <span className="text-foreground">OpenSky Network</span> (open data, anonymous access)</li>
-        <li>Map — <span className="text-foreground">OpenFreeMap</span> / OpenStreetMap contributors</li>
+        <li>Clima — <span className="text-foreground">Open-Meteo</span> (dados abertos, CC-BY 4.0)</li>
+        <li>Tráfego aéreo — <span className="text-foreground">OpenSky Network</span> (dados abertos, acesso anônimo)</li>
+        <li>Mapa — <span className="text-foreground">OpenFreeMap</span> / colaboradores do OpenStreetMap</li>
       </ul>
     </section>
   );

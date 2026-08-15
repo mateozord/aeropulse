@@ -16,7 +16,7 @@ type Props = {
 
 function formatTime(date: Date | null) {
   if (!date) return "—";
-  return date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  return date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
 
 export function WarRoom({ weather, traffic }: Props) {
@@ -55,7 +55,7 @@ export function WarRoom({ weather, traffic }: Props) {
         <div className="flex items-baseline gap-4">
           <span className="text-sm font-semibold tracking-[0.2em] text-foreground">AEROPULSE</span>
           <span className="hidden text-sm uppercase tracking-[0.2em] text-muted sm:inline">
-            Brazil Aviation
+            Aviação Brasil
           </span>
         </div>
         <div className="flex items-center gap-4 sm:gap-6">
@@ -67,14 +67,14 @@ export function WarRoom({ weather, traffic }: Props) {
             <span
               className={`h-1.5 w-1.5 rounded-full ${live ? "animate-breathe bg-accent" : "bg-attention"}`}
             />
-            {live ? "Live signal" : "Mock data"}
+            {live ? "Sinal ao vivo" : "Dados simulados"}
           </span>
           <LiveClock />
           <Link
             to="/"
             className="text-xs uppercase tracking-wider text-muted transition-colors hover:text-foreground"
           >
-            Exit
+            Sair
           </Link>
         </div>
       </header>
@@ -87,14 +87,14 @@ export function WarRoom({ weather, traffic }: Props) {
 
         <aside className="flex w-80 shrink-0 flex-col gap-6 overflow-y-auto border-l border-border p-6">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted">Monitored airports</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Aeroportos monitorados</p>
             <p className="mt-1 font-mono text-3xl tabular-nums text-foreground">
               <AnimatedNumber value={AIRPORTS.length} />
             </p>
           </div>
 
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted">Observed aircraft</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Aeronaves observadas</p>
             <p className="mt-1 font-mono text-3xl tabular-nums text-foreground">
               <AnimatedNumber value={totalObserved} />
             </p>
@@ -102,10 +102,10 @@ export function WarRoom({ weather, traffic }: Props) {
 
           <div className="border-t border-border pt-6">
             <p className="text-xs uppercase tracking-wider text-muted">
-              Airports in attention ({attentionAirports.length})
+              Aeroportos em atenção ({attentionAirports.length})
             </p>
             {attentionAirports.length === 0 ? (
-              <p className="mt-2 text-sm text-muted">None right now.</p>
+              <p className="mt-2 text-sm text-muted">Nenhum no momento.</p>
             ) : (
               <ul className="mt-3 space-y-2">
                 {attentionAirports.map((a) => (
@@ -125,9 +125,9 @@ export function WarRoom({ weather, traffic }: Props) {
           </div>
 
           <div className="border-t border-border pt-6">
-            <p className="text-xs uppercase tracking-wider text-muted">Main signals</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Principais sinais</p>
             {mainSignals.length === 0 ? (
-              <p className="mt-2 text-sm text-muted">No elevated signals detected.</p>
+              <p className="mt-2 text-sm text-muted">Nenhum sinal elevado detectado.</p>
             ) : (
               <ul className="mt-3 space-y-1.5">
                 {mainSignals.map((line) => (
@@ -140,7 +140,7 @@ export function WarRoom({ weather, traffic }: Props) {
           </div>
 
           <div className="mt-auto border-t border-border pt-6 text-xs text-muted">
-            Weather updated {formatTime(weather.lastUpdated)} · Traffic updated{" "}
+            Clima atualizado às {formatTime(weather.lastUpdated)} · Tráfego atualizado às{" "}
             {formatTime(traffic.lastUpdated)}
           </div>
         </aside>
@@ -150,20 +150,20 @@ export function WarRoom({ weather, traffic }: Props) {
       <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4 md:hidden">
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-lg border border-border bg-surface p-4">
-            <p className="text-xs uppercase tracking-wider text-muted">Airports</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Aeroportos</p>
             <p className="mt-1 font-mono text-2xl tabular-nums text-foreground">
               <AnimatedNumber value={AIRPORTS.length} />
             </p>
           </div>
           <div className="rounded-lg border border-border bg-surface p-4">
-            <p className="text-xs uppercase tracking-wider text-muted">Aircraft</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Aeronaves</p>
             <p className="mt-1 font-mono text-2xl tabular-nums text-foreground">
               <AnimatedNumber value={totalObserved} />
             </p>
           </div>
         </div>
 
-        <p className="mt-6 text-xs uppercase tracking-wider text-muted">All airports</p>
+        <p className="mt-6 text-xs uppercase tracking-wider text-muted">Todos os aeroportos</p>
         <ul className="mt-3 space-y-1">
           {AIRPORTS.map((a) => (
             <li key={a.iata}>
@@ -180,7 +180,7 @@ export function WarRoom({ weather, traffic }: Props) {
         </ul>
 
         <div className="mt-6 text-xs text-muted">
-          Weather updated {formatTime(weather.lastUpdated)} · Traffic updated{" "}
+          Clima atualizado às {formatTime(weather.lastUpdated)} · Tráfego atualizado às{" "}
           {formatTime(traffic.lastUpdated)}
         </div>
       </div>

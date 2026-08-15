@@ -2,12 +2,12 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const NAV_ITEMS = [
-  { to: "/", label: "Overview" },
-  { to: "/map", label: "Map" },
-  { to: "/airports", label: "Airports" },
-  { to: "/war-room", label: "War Room" },
-  { to: "/methodology", label: "Methodology" },
-  { to: "/about", label: "About" },
+  { to: "/", label: "Visão Geral" },
+  { to: "/map", label: "Mapa" },
+  { to: "/airports", label: "Aeroportos" },
+  { to: "/war-room", label: "Sala de Operações" },
+  { to: "/methodology", label: "Metodologia" },
+  { to: "/about", label: "Sobre" },
 ];
 
 export function Header({ live }: { live: boolean }) {
@@ -46,13 +46,13 @@ export function Header({ live }: { live: boolean }) {
             <span
               className={`h-1.5 w-1.5 rounded-full ${live ? "animate-breathe bg-accent" : "bg-attention"}`}
             />
-            {live ? "Live" : "Mock data"}
+            {live ? "Ao vivo" : "Dados simulados"}
           </div>
 
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
             aria-expanded={menuOpen}
             className="text-muted hover:text-foreground md:hidden"
           >

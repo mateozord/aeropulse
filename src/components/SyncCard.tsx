@@ -1,5 +1,5 @@
 function formatTime(date: Date) {
-  return date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  return date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
 
 type Props = {
@@ -14,13 +14,13 @@ export function SyncCard({ title, status, lastUpdated, onRefresh }: Props) {
     <div className="rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-border-strong">
       <p className="text-xs uppercase tracking-wider text-muted">{title}</p>
       {status === "syncing" && !lastUpdated && (
-        <p className="mt-2 text-lg font-medium text-accent">Syncing live data…</p>
+        <p className="mt-2 text-lg font-medium text-accent">Sincronizando dados ao vivo…</p>
       )}
       {lastUpdated && (
         <p className="mt-2 text-3xl font-semibold tabular-nums text-foreground">{formatTime(lastUpdated)}</p>
       )}
       {status === "error" && !lastUpdated && (
-        <p className="mt-2 text-sm font-medium text-elevated">Data source temporarily unavailable</p>
+        <p className="mt-2 text-sm font-medium text-elevated">Fonte de dados temporariamente indisponível</p>
       )}
       <button
         type="button"
@@ -28,7 +28,7 @@ export function SyncCard({ title, status, lastUpdated, onRefresh }: Props) {
         disabled={status === "syncing"}
         className="mt-3 text-xs uppercase tracking-wider text-muted transition-colors hover:text-accent disabled:opacity-50"
       >
-        {status === "syncing" ? "Syncing…" : "Refresh"}
+        {status === "syncing" ? "Sincronizando…" : "Atualizar"}
       </button>
     </div>
   );

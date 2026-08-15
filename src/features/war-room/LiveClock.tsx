@@ -10,7 +10,7 @@ export function LiveClock() {
 
   return (
     <span className="font-mono text-lg tabular-nums text-foreground">
-      {now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+      {now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
     </span>
   );
 }

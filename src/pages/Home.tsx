@@ -34,7 +34,7 @@ export function Home({ weather, traffic }: Props) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <p className="animate-fade-in-up text-xs uppercase tracking-[0.3em] text-accent">
-        Experimental Aviation Intelligence Platform
+        Plataforma Experimental de Inteligência em Aviação
       </p>
       <h1
         className="animate-fade-in-up mt-4 text-5xl font-semibold tracking-tight text-foreground md:text-7xl"
@@ -43,10 +43,10 @@ export function Home({ weather, traffic }: Props) {
         AeroPulse
       </h1>
       <p className="animate-fade-in-up mt-2 text-2xl text-muted" style={{ animationDelay: "120ms" }}>
-        Aviation Intelligence
+        Inteligência em Aviação
       </p>
       <p className="animate-fade-in-up mt-6 max-w-xl text-lg text-muted" style={{ animationDelay: "180ms" }}>
-        Understand what's happening in the sky.
+        Entenda o que está acontecendo no céu.
       </p>
 
       <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_280px]">
@@ -62,7 +62,7 @@ export function Home({ weather, traffic }: Props) {
             className="animate-fade-in-up rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-border-strong"
             style={{ animationDelay: "300ms" }}
           >
-            <p className="text-xs uppercase tracking-wider text-muted">Monitored airports</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Aeroportos monitorados</p>
             <p className="mt-2 text-3xl font-semibold text-foreground">
               <AnimatedNumber value={AIRPORTS.length} />
             </p>
@@ -72,7 +72,7 @@ export function Home({ weather, traffic }: Props) {
             className="animate-fade-in-up rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-border-strong"
             style={{ animationDelay: "360ms" }}
           >
-            <p className="text-xs uppercase tracking-wider text-muted">Needs attention</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Precisam de atenção</p>
             <p className="mt-2 text-3xl font-semibold text-foreground">
               <AnimatedNumber value={attentionAirports.length} />
             </p>
@@ -92,13 +92,13 @@ export function Home({ weather, traffic }: Props) {
                 ))}
               </ul>
             ) : (
-              <p className="mt-2 text-sm text-muted">None right now.</p>
+              <p className="mt-2 text-sm text-muted">Nenhum no momento.</p>
             )}
           </div>
 
           <div className="animate-fade-in-up" style={{ animationDelay: "420ms" }}>
             <SyncCard
-              title="Weather sync"
+              title="Sincronização do clima"
               status={weather.status}
               lastUpdated={weather.lastUpdated}
               onRefresh={weather.sync}
@@ -106,7 +106,7 @@ export function Home({ weather, traffic }: Props) {
           </div>
           <div className="animate-fade-in-up" style={{ animationDelay: "480ms" }}>
             <SyncCard
-              title="Traffic sync"
+              title="Sincronização do tráfego"
               status={traffic.status}
               lastUpdated={traffic.lastUpdated}
               onRefresh={traffic.sync}

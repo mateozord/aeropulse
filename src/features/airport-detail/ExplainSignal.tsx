@@ -28,7 +28,7 @@ export function ExplainSignal({ payload }: { payload: ExplainPayload }) {
         onClick={explain}
         className="mt-4 text-sm text-accent transition-colors hover:text-foreground"
       >
-        Explain this signal →
+        Explicar este sinal →
       </button>
     );
   }
@@ -36,21 +36,21 @@ export function ExplainSignal({ payload }: { payload: ExplainPayload }) {
   return (
     <div className="animate-fade-in-up mt-4 rounded-lg border border-border bg-surface-raised p-4">
       <div className="flex items-center justify-between">
-        <p className="text-xs uppercase tracking-wider text-muted">AI explanation</p>
+        <p className="text-xs uppercase tracking-wider text-muted">Explicação da IA</p>
         {state.status === "ready" && (
           <span className="text-[10px] uppercase tracking-wider text-muted">Gemini · experimental</span>
         )}
       </div>
 
       {state.status === "loading" && (
-        <p className="mt-2 text-sm text-muted">Reading the signal…</p>
+        <p className="mt-2 text-sm text-muted">Analisando o sinal…</p>
       )}
       {state.status === "ready" && <p className="mt-2 text-sm text-foreground">{state.text}</p>}
       {state.status === "error" && (
         <p className="mt-2 text-sm text-muted">
-          AI explanation temporarily unavailable.{" "}
+          Explicação da IA temporariamente indisponível.{" "}
           <button type="button" onClick={explain} className="text-accent hover:underline">
-            Try again
+            Tentar novamente
           </button>
         </p>
       )}

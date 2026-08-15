@@ -7,7 +7,7 @@ import { AnimatedNumber } from "../../components/AnimatedNumber";
 import { MockBadge } from "../../components/MockBadge";
 import { SourceTag } from "../../components/SourceTag";
 import { StatusBadge } from "../../components/StatusBadge";
-import { STATUS_COLOR } from "../../utils/status";
+import { STATUS_COLOR, TREND_LABEL_PT, VISIBILITY_LABEL_PT } from "../../utils/status";
 
 type Props = {
   airport: Airport | null;
@@ -44,15 +44,15 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
               type="button"
               onClick={onClose}
               className="rounded border border-border px-2 py-1 text-xs text-muted transition-colors hover:border-border-strong hover:text-foreground"
-              aria-label="Close panel"
+              aria-label="Fechar painel"
             >
-              Close
+              Fechar
             </button>
           </div>
 
           <div className="mt-8 flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-wider text-muted">AeroPulse</p>
+              <p className="text-xs uppercase tracking-wider text-muted">Score AeroPulse</p>
               <p className="text-5xl font-semibold tabular-nums text-foreground">
                 <AnimatedNumber value={signal.score} />
                 <span className="text-lg text-muted">/100</span>
@@ -67,7 +67,7 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
           </div>
 
           <section className="mt-8">
-            <p className="text-xs uppercase tracking-wider text-muted">Main drivers</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Principais fatores</p>
             <ul className="mt-2 space-y-1.5">
               {signal.drivers.map((driver) => (
                 <li key={driver} className="flex items-center gap-2 text-sm text-foreground">
@@ -83,57 +83,57 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
 
           <section className="mt-8 border-t border-border pt-6">
             <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-wider text-muted">Weather</p>
+              <p className="text-xs uppercase tracking-wider text-muted">Clima</p>
               <SourceTag source={signal.weather.source} label="Open-Meteo" />
             </div>
             {signal.weather.source === "mock" && (
               <p className="mt-1 text-[11px] text-muted">
                 {weatherStatus === "syncing"
-                  ? "Syncing live data…"
-                  : "Unable to refresh weather data. Showing example values."}
+                  ? "Sincronizando dados ao vivo…"
+                  : "Não foi possível atualizar os dados do clima. Mostrando valores de exemplo."}
               </p>
             )}
             <dl className="mt-3 grid grid-cols-3 gap-4">
               <div>
-                <dt className="text-[11px] text-muted">Rain</dt>
+                <dt className="text-[11px] text-muted">Chuva</dt>
                 <dd className="text-lg font-medium text-foreground">{signal.weather.rainChance}%</dd>
               </div>
               <div>
-                <dt className="text-[11px] text-muted">Wind</dt>
+                <dt className="text-[11px] text-muted">Vento</dt>
                 <dd className="text-lg font-medium text-foreground">{signal.weather.windSpeed} km/h</dd>
               </div>
               <div>
-                <dt className="text-[11px] text-muted">Visibility</dt>
-                <dd className="text-lg font-medium text-foreground">{signal.weather.visibility}</dd>
+                <dt className="text-[11px] text-muted">Visibilidade</dt>
+                <dd className="text-lg font-medium text-foreground">{VISIBILITY_LABEL_PT[signal.weather.visibility]}</dd>
               </div>
             </dl>
           </section>
 
           <section className="mt-8 border-t border-border pt-6">
             <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-wider text-muted">Air traffic</p>
+              <p className="text-xs uppercase tracking-wider text-muted">Tráfego aéreo</p>
               <SourceTag source={signal.traffic.source} label="OpenSky" />
             </div>
             {signal.traffic.source === "mock" && (
               <p className="mt-1 text-[11px] text-muted">
                 {trafficStatus === "syncing"
-                  ? "Syncing live data…"
-                  : "Unable to refresh traffic data. Showing example values."}
+                  ? "Sincronizando dados ao vivo…"
+                  : "Não foi possível atualizar os dados de tráfego. Mostrando valores de exemplo."}
               </p>
             )}
             <dl className="mt-3">
-              <dt className="text-[11px] text-muted">Observed aircraft (50km radius)</dt>
+              <dt className="text-[11px] text-muted">Aeronaves observadas (raio de 50km)</dt>
               <dd className="text-lg font-medium text-foreground">{signal.traffic.observedAircraft}</dd>
             </dl>
           </section>
 
           <section className="mt-8 border-t border-border pt-6">
             <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-wider text-muted">Trend</p>
+              <p className="text-xs uppercase tracking-wider text-muted">Tendência</p>
               <MockBadge />
             </div>
             <p className="mt-2 text-lg font-medium text-foreground">
-              {TREND_ARROW[signal.trend]} {signal.trend}
+              {TREND_ARROW[signal.trend]} {TREND_LABEL_PT[signal.trend]}
             </p>
           </section>
 
@@ -141,12 +141,12 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
             to={`/airports/${airport.iata}`}
             className="mt-auto flex items-center justify-center border-t border-border pt-6 text-sm text-accent hover:text-foreground"
           >
-            View full detail →
+            Ver detalhe completo →
           </Link>
 
           <p className="mt-4 text-[11px] leading-relaxed text-muted">
-            AeroPulse Score is an experimental signal computed by this app, not an official
-            aviation indicator. It does not predict delays, cancellations, or real operations.
+            O Score AeroPulse é um sinal experimental calculado por este app, não é um indicador
+            oficial de aviação. Ele não prevê atrasos, cancelamentos ou operações reais.
           </p>
         </div>
       )}

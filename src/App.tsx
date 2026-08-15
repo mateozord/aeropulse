@@ -27,18 +27,18 @@ function App() {
           <Route path="/" element={<Home weather={weather} traffic={traffic} />} />
           <Route
             path="/map"
-            element={<Placeholder title="Map" note="Full map view coming in a later phase." />}
+            element={<Placeholder title="Mapa" note="Visão de mapa completa chegando numa fase futura." />}
           />
           <Route
             path="/airports"
-            element={<Placeholder title="Airports" note="Airport list coming in a later phase." />}
+            element={<Placeholder title="Aeroportos" note="Lista de aeroportos chegando numa fase futura." />}
           />
           <Route path="/airports/:iata" element={<AirportDetail weather={weather} traffic={traffic} />} />
           <Route path="/war-room" element={<WarRoom weather={weather} traffic={traffic} />} />
           <Route path="/methodology" element={<Methodology />} />
           <Route
             path="/about"
-            element={<Placeholder title="About" note="AeroPulse is an experimental aviation intelligence platform. It does not predict delays, cancellations, or official operations." />}
+            element={<Placeholder title="Sobre" note="O AeroPulse é uma plataforma experimental de inteligência em aviação. Ele não prevê atrasos, cancelamentos ou operações oficiais." />}
           />
         </Routes>
       </Suspense>

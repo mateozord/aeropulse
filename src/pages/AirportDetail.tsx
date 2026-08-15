@@ -7,7 +7,7 @@ import { SourceTag } from "../components/SourceTag";
 import { StatusBadge } from "../components/StatusBadge";
 import { AnimatedNumber } from "../components/AnimatedNumber";
 import { ExplainSignal } from "../features/airport-detail/ExplainSignal";
-import { STATUS_COLOR } from "../utils/status";
+import { STATUS_COLOR, VISIBILITY_LABEL_PT } from "../utils/status";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
 import type { useTrafficSignals } from "../features/traffic/useTrafficSignals";
 
@@ -26,9 +26,9 @@ export function AirportDetail({ weather, traffic }: Props) {
   if (!airport) {
     return (
       <section className="mx-auto max-w-3xl px-6 py-16">
-        <p className="text-muted">Unknown airport code "{iata}".</p>
+        <p className="text-muted">Código de aeroporto desconhecido: "{iata}".</p>
         <Link to="/" className="mt-4 inline-block text-sm text-accent hover:underline">
-          ← Back to overview
+          ← Voltar para a visão geral
         </Link>
       </section>
     );
@@ -41,7 +41,7 @@ export function AirportDetail({ weather, traffic }: Props) {
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
       <Link to="/" className="text-sm text-muted transition-colors hover:text-accent">
-        ← Overview
+        ← Visão geral
       </Link>
 
       <div className="animate-fade-in-up mt-6">
@@ -55,7 +55,7 @@ export function AirportDetail({ weather, traffic }: Props) {
         style={{ animationDelay: "80ms" }}
       >
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted">AeroPulse Score</p>
+          <p className="text-xs uppercase tracking-wider text-muted">Score AeroPulse</p>
           <p className="mt-1 text-6xl font-semibold tabular-nums text-foreground">
             <AnimatedNumber value={signal.score} />
             <span className="text-xl text-muted">/100</span>
@@ -70,7 +70,7 @@ export function AirportDetail({ weather, traffic }: Props) {
       </div>
 
       <section className="animate-fade-in-up mt-6" style={{ animationDelay: "140ms" }}>
-        <p className="text-xs uppercase tracking-wider text-muted">Main drivers</p>
+        <p className="text-xs uppercase tracking-wider text-muted">Principais fatores</p>
         <ul className="mt-2 space-y-1.5">
           {signal.drivers.map((driver) => (
             <li key={driver} className="flex items-center gap-2 text-sm text-foreground">
@@ -101,12 +101,12 @@ export function AirportDetail({ weather, traffic }: Props) {
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted">Trend</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Tendência</p>
             <p className="text-[11px] text-muted">
-              {hasRealHistory ? "Last 24h, captured every 30 min" : "Example forecast shape"}
+              {hasRealHistory ? "Últimas 24h, capturado a cada 30 min" : "Exemplo ilustrativo, não é dado real"}
             </p>
           </div>
-          <SourceTag source={hasRealHistory ? "live" : "mock"} label="History" />
+          <SourceTag source={hasRealHistory ? "live" : "mock"} label="Histórico" />
         </div>
         <TrendChart timeline={trendTimeline} status={signal.status} />
       </section>
@@ -117,21 +117,21 @@ export function AirportDetail({ weather, traffic }: Props) {
           style={{ animationDelay: "260ms" }}
         >
           <div className="flex items-center justify-between">
-            <p className="text-xs uppercase tracking-wider text-muted">Weather</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Clima</p>
             <SourceTag source={signal.weather.source} label="Open-Meteo" />
           </div>
           <dl className="mt-4 grid grid-cols-3 gap-4">
             <div>
-              <dt className="text-[11px] text-muted">Rain</dt>
+              <dt className="text-[11px] text-muted">Chuva</dt>
               <dd className="text-lg font-medium text-foreground">{signal.weather.rainChance}%</dd>
             </div>
             <div>
-              <dt className="text-[11px] text-muted">Wind</dt>
+              <dt className="text-[11px] text-muted">Vento</dt>
               <dd className="text-lg font-medium text-foreground">{signal.weather.windSpeed} km/h</dd>
             </div>
             <div>
-              <dt className="text-[11px] text-muted">Visibility</dt>
-              <dd className="text-lg font-medium text-foreground">{signal.weather.visibility}</dd>
+              <dt className="text-[11px] text-muted">Visibilidade</dt>
+              <dd className="text-lg font-medium text-foreground">{VISIBILITY_LABEL_PT[signal.weather.visibility]}</dd>
             </div>
           </dl>
         </div>
@@ -141,23 +141,23 @@ export function AirportDetail({ weather, traffic }: Props) {
           style={{ animationDelay: "320ms" }}
         >
           <div className="flex items-center justify-between">
-            <p className="text-xs uppercase tracking-wider text-muted">Air traffic</p>
+            <p className="text-xs uppercase tracking-wider text-muted">Tráfego aéreo</p>
             <SourceTag source={signal.traffic.source} label="OpenSky" />
           </div>
           <dl className="mt-4">
-            <dt className="text-[11px] text-muted">Observed aircraft (50km radius)</dt>
+            <dt className="text-[11px] text-muted">Aeronaves observadas (raio de 50km)</dt>
             <dd className="text-lg font-medium text-foreground">{signal.traffic.observedAircraft}</dd>
           </dl>
         </div>
       </div>
 
       <p className="mt-10 max-w-xl text-[11px] leading-relaxed text-muted">
-        AeroPulse Score is an experimental signal computed by this app, not an official aviation
-        indicator. It does not predict delays, cancellations, or real operations. See{" "}
+        O Score AeroPulse é um sinal experimental calculado por este app, não é um indicador oficial
+        de aviação. Ele não prevê atrasos, cancelamentos ou operações reais. Veja a{" "}
         <Link to="/methodology" className="text-accent hover:underline">
-          Methodology
+          Metodologia
         </Link>{" "}
-        for how it's calculated.
+        para entender como é calculado.
       </p>
     </section>
   );

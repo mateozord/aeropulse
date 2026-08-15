@@ -23,12 +23,12 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-base px-6 text-center">
-          <p className="text-sm uppercase tracking-wider text-attention">Something went wrong</p>
+          <p className="text-sm uppercase tracking-wider text-attention">Algo deu errado</p>
           <p className="max-w-sm text-sm text-muted">
-            AeroPulse hit an unexpected error. Reloading the page usually fixes it.
+            O AeroPulse encontrou um erro inesperado. Recarregar a página geralmente resolve.
           </p>
           <a href="/" className="mt-2 text-sm text-accent hover:underline">
-            Reload
+            Recarregar
           </a>
         </div>
       );

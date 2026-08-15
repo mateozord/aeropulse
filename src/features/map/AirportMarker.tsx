@@ -1,5 +1,5 @@
 import type { AeroPulseStatus } from "../../types/airport";
-import { STATUS_COLOR } from "../../utils/status";
+import { STATUS_COLOR, STATUS_LABEL_PT } from "../../utils/status";
 
 type Props = {
   status: AeroPulseStatus;
@@ -16,7 +16,7 @@ export function AirportMarker({ status, iata, active, onClick }: Props) {
     <button
       type="button"
       onClick={onClick}
-      aria-label={`${iata} — ${status}`}
+      aria-label={`${iata} — ${STATUS_LABEL_PT[status]}`}
       className="group relative flex h-11 w-11 items-center justify-center"
     >
       {urgent && (

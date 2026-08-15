@@ -35,16 +35,16 @@ export function computeScore(weather: WeatherSignal): ScoreResult {
   const score = Math.min(100, Math.round(rainPoints + windPoints + visibilityPoints));
 
   const drivers: string[] = [];
-  if (weather.rainChance >= 60) drivers.push("Heavy precipitation");
-  else if (weather.rainChance >= 25) drivers.push("Moderate rain");
+  if (weather.rainChance >= 60) drivers.push("Chuva forte");
+  else if (weather.rainChance >= 25) drivers.push("Chuva moderada");
 
-  if (weather.windSpeed >= 40) drivers.push("Strong winds");
-  else if (weather.windSpeed >= 25) drivers.push("Elevated winds");
+  if (weather.windSpeed >= 40) drivers.push("Ventos fortes");
+  else if (weather.windSpeed >= 25) drivers.push("Ventos elevados");
 
-  if (weather.visibility === "Poor") drivers.push("Low visibility");
-  else if (weather.visibility === "Moderate") drivers.push("Reduced visibility");
+  if (weather.visibility === "Poor") drivers.push("Visibilidade baixa");
+  else if (weather.visibility === "Moderate") drivers.push("Visibilidade reduzida");
 
-  if (drivers.length === 0) drivers.push("Normal conditions");
+  if (drivers.length === 0) drivers.push("Condições normais");
 
   return { score, status: statusFromScore(score), drivers };
 }

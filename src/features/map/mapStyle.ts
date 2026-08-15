@@ -65,7 +65,7 @@ export const DARK_MAP_STYLE: StyleSpecification = {
       "source-layer": "place",
       filter: ["==", ["get", "class"], "country"],
       layout: {
-        "text-field": ["get", "name:en"],
+        "text-field": ["coalesce", ["get", "name:pt"], ["get", "name"]],
         "text-font": ["Noto Sans Regular"],
         "text-size": 11,
         "text-transform": "uppercase",
@@ -80,7 +80,7 @@ export const DARK_MAP_STYLE: StyleSpecification = {
       "source-layer": "place",
       filter: ["==", ["get", "class"], "city"],
       layout: {
-        "text-field": ["get", "name:en"],
+        "text-field": ["coalesce", ["get", "name:pt"], ["get", "name"]],
         "text-font": ["Noto Sans Regular"],
         "text-size": 10,
       },
