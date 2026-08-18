@@ -5,6 +5,7 @@ import { AirportMap } from "../features/map/AirportMap";
 import { LiveClock } from "../features/war-room/LiveClock";
 import { StatusBadge } from "../components/StatusBadge";
 import { SystemNominal } from "../components/SystemNominal";
+import { Logo } from "../components/Logo";
 import { AnimatedNumber } from "../components/AnimatedNumber";
 import { useAirportSignals } from "../features/signals/useAirportSignals";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
@@ -70,8 +71,11 @@ export function WarRoom({ weather, traffic }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col bg-base">
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-border px-6">
-        <div className="flex items-baseline gap-4">
-          <span className="text-sm font-semibold tracking-[0.2em] text-foreground">AEROPULSE</span>
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-2.5 text-sm font-semibold tracking-[0.2em] text-foreground">
+            <Logo />
+            AEROPULSE
+          </span>
           <span className="hidden text-sm uppercase tracking-[0.2em] text-muted sm:inline">
             Aviação Brasil
           </span>

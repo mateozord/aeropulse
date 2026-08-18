@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Logo } from "./Logo";
 
 const NAV_ITEMS = [
   { to: "/", label: "Visão Geral" },
@@ -18,7 +19,11 @@ export function Header({ liveState }: { liveState: LiveState }) {
   return (
     <header className="relative border-b border-border bg-base/95 backdrop-blur sticky top-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <NavLink to="/" className="text-sm font-semibold tracking-[0.2em] text-foreground">
+        <NavLink
+          to="/"
+          className="flex items-center gap-2.5 text-sm font-semibold tracking-[0.2em] text-foreground"
+        >
+          <Logo />
           AEROPULSE
         </NavLink>
 
