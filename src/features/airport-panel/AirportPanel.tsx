@@ -9,6 +9,8 @@ import { SourceTag } from "../../components/SourceTag";
 import { StatusBadge } from "../../components/StatusBadge";
 import { ScoreBreakdown } from "../../components/ScoreBreakdown";
 import { STATUS_COLOR, TREND_LABEL_PT, VISIBILITY_LABEL_PT } from "../../utils/status";
+import { formatCount } from "../../utils/format";
+import { trafficDataStatus, weatherDataStatus } from "../../utils/dataStatus";
 
 type Props = {
   airport: Airport | null;
@@ -26,6 +28,8 @@ const TREND_ARROW: Record<string, string> = {
 
 export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, onClose }: Props) {
   const open = airport !== null && signal !== null;
+  const weatherData = signal ? weatherDataStatus(signal.weather) : null;
+  const trafficData = signal ? trafficDataStatus(signal.traffic) : null;
 
   return (
     <aside
@@ -34,7 +38,7 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
       }`}
       aria-hidden={!open}
     >
-      {airport && signal && (
+      {airport && signal && weatherData && trafficData && (
         <div className="flex h-full flex-col overflow-y-auto p-6">
           <div className="flex items-start justify-between">
             <div>
@@ -62,7 +66,7 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
             <div className="text-right">
               <StatusBadge status={signal.status} />
               <div className="mt-2">
-                <SourceTag source={signal.weather.source} label="AeroPulse Engine" />
+                <SourceTag {...weatherData} label="AeroPulse Engine" />
               </div>
             </div>
           </div>
@@ -86,7 +90,7 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
           <section className="mt-8 border-t border-border pt-6">
             <div className="flex items-center justify-between">
               <p className="text-xs uppercase tracking-wider text-muted">Clima</p>
-              <SourceTag source={signal.weather.source} label="Open-Meteo" />
+              <SourceTag {...weatherData} label="Open-Meteo" />
             </div>
             {signal.weather.source === "mock" && (
               <p className="mt-1 text-[11px] text-muted">
@@ -114,7 +118,7 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
           <section className="mt-8 border-t border-border pt-6">
             <div className="flex items-center justify-between">
               <p className="text-xs uppercase tracking-wider text-muted">Tráfego aéreo</p>
-              <SourceTag source={signal.traffic.source} label="OpenSky" />
+              <SourceTag {...trafficData} label="OpenSky" />
             </div>
             {signal.traffic.source === "mock" && (
               <p className="mt-1 text-[11px] text-muted">
@@ -123,9 +127,12 @@ export function AirportPanel({ airport, signal, weatherStatus, trafficStatus, on
                   : "Não foi possível atualizar os dados de tráfego. Mostrando valores de exemplo."}
               </p>
             )}
+            {trafficData.source === "unavailable" && (
+              <p className="mt-1 text-[11px] text-muted">Sem leitura recente de tráfego para este aeroporto.</p>
+            )}
             <dl className="mt-3">
               <dt className="text-[11px] text-muted">Aeronaves observadas (raio de 50km)</dt>
-              <dd className="text-lg font-medium text-foreground">{signal.traffic.observedAircraft}</dd>
+              <dd className="text-lg font-medium text-foreground">{formatCount(signal.traffic.observedAircraft)}</dd>
             </dl>
           </section>
 

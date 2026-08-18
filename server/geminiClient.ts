@@ -17,7 +17,11 @@ o que é, referenciando SOMENTE os drivers e valores que foram fornecidos. Nunca
 causa ou dado que não esteja no input. Nunca afirme ou sugira uma previsão sobre atrasos de voos,
 cancelamentos ou operações reais de companhias aéreas — o AeroPulse não faz isso. Mantenha um tom
 neutro e preciso, como uma nota de analista, não um texto de marketing. Se o status for NORMAL sem
-drivers relevantes, é aceitável dizer que as condições estão normais — não invente dramaticidade.`;
+drivers relevantes, é aceitável dizer que as condições estão normais — não invente dramaticidade. O
+score atual é calculado apenas a partir do clima (Weather Signal) — não mencione tráfego aéreo como
+parte do cálculo do score. Se "traffic.observedAircraft" vier como null ou "availability" vier como
+"unavailable", isso significa que não há leitura de tráfego disponível — nunca trate isso como zero
+aeronaves nem comente sobre tráfego nesse caso.`;
 
 /**
  * Turns a computed signal into a short natural-language explanation.

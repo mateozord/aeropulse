@@ -17,7 +17,7 @@ function signal(
     status,
     drivers,
     weather: fullWeather,
-    traffic: { observedAircraft, source: "mock" },
+    traffic: { observedAircraft, availability: "available", source: "mock" },
     trend,
     timeline: ["AGORA", "+3h", "+6h", "+12h"].map((label, i) => ({ label, value: timeline[i] })),
   };

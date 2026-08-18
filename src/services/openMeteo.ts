@@ -1,4 +1,5 @@
 import type { Visibility, WeatherSignal } from "../types/signal";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 
 const BASE_URL = "https://api.open-meteo.com/v1/forecast";
 
@@ -34,7 +35,7 @@ function nearestHourIndex(hourlyTimes: string[], currentTime: string): number {
 export async function fetchLiveWeather(lat: number, lon: number): Promise<WeatherSignal> {
   const url = `${BASE_URL}?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=precipitation_probability,visibility&forecast_days=1&timezone=auto`;
 
-  const response = await fetch(url);
+  const response = await fetchWithTimeout(url);
   if (!response.ok) {
     throw new Error(`Open-Meteo request failed with status ${response.status}`);
   }

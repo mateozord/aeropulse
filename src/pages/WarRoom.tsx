@@ -9,6 +9,8 @@ import { AnimatedNumber } from "../components/AnimatedNumber";
 import { useAirportSignals } from "../features/signals/useAirportSignals";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
 import type { useTrafficSignals } from "../features/traffic/useTrafficSignals";
+import { isFresh } from "../utils/freshness";
+import { WEATHER_STALE_MINUTES } from "../utils/constants";
 
 type Props = {
   weather: ReturnType<typeof useWeatherSignals>;
@@ -23,7 +25,9 @@ function formatTime(date: Date | null) {
 export function WarRoom({ weather, traffic }: Props) {
   const navigate = useNavigate();
   const signals = useAirportSignals(weather, traffic);
-  const live = weather.lastUpdated !== null;
+  const hasSyncedOnce = weather.lastUpdated !== null;
+  const live = isFresh(weather.lastUpdated, WEATHER_STALE_MINUTES);
+  const liveLabel = live ? "Sinal ao vivo" : hasSyncedOnce ? "Sinal desatualizado" : "Dados simulados";
 
   const attentionAirports = useMemo(
     () => AIRPORTS.filter((a) => signals[a.iata].status !== "NORMAL"),
@@ -36,7 +40,11 @@ export function WarRoom({ weather, traffic }: Props) {
   );
 
   const totalObserved = useMemo(
-    () => AIRPORTS.reduce((sum, a) => sum + signals[a.iata].traffic.observedAircraft, 0),
+    () => AIRPORTS.reduce((sum, a) => sum + (signals[a.iata].traffic.observedAircraft ?? 0), 0),
+    [signals],
+  );
+  const observedCoverage = useMemo(
+    () => AIRPORTS.filter((a) => signals[a.iata].traffic.observedAircraft !== null).length,
     [signals],
   );
 
@@ -51,7 +59,8 @@ export function WarRoom({ weather, traffic }: Props) {
   const topObserved = useMemo(
     () =>
       [...AIRPORTS]
-        .sort((a, b) => signals[b.iata].traffic.observedAircraft - signals[a.iata].traffic.observedAircraft)
+        .filter((a) => signals[a.iata].traffic.observedAircraft !== null)
+        .sort((a, b) => signals[b.iata].traffic.observedAircraft! - signals[a.iata].traffic.observedAircraft!)
         .slice(0, 3),
     [signals],
   );
@@ -70,13 +79,15 @@ export function WarRoom({ weather, traffic }: Props) {
         <div className="flex items-center gap-4 sm:gap-6">
           <span
             className={`hidden items-center gap-2 text-xs uppercase tracking-wider sm:flex ${
-              live ? "text-accent" : "text-attention"
+              live ? "text-accent" : hasSyncedOnce ? "text-attention" : "text-muted"
             }`}
           >
             <span
-              className={`h-1.5 w-1.5 rounded-full ${live ? "animate-breathe bg-accent" : "bg-attention"}`}
+              className={`h-1.5 w-1.5 rounded-full ${
+                live ? "animate-breathe bg-accent" : hasSyncedOnce ? "bg-attention" : "bg-muted"
+              }`}
             />
-            {live ? "Sinal ao vivo" : "Dados simulados"}
+            {liveLabel}
           </span>
           <LiveClock />
           <Link
@@ -107,6 +118,11 @@ export function WarRoom({ weather, traffic }: Props) {
             <p className="mt-1 font-mono text-3xl tabular-nums text-foreground">
               <AnimatedNumber value={totalObserved} />
             </p>
+            {observedCoverage < AIRPORTS.length && (
+              <p className="mt-0.5 text-[11px] text-muted">
+                Cobertura: {observedCoverage}/{AIRPORTS.length} aeroportos
+              </p>
+            )}
           </div>
 
           <div className="border-t border-border pt-6">

@@ -12,7 +12,8 @@ export type ExplainPayload = {
     source: "live" | "mock";
   };
   traffic: {
-    observedAircraft: number;
+    observedAircraft: number | null;
+    availability: "available" | "stale" | "unavailable";
     source: "live" | "mock";
   };
 };

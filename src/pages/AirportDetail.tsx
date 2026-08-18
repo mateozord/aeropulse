@@ -7,8 +7,11 @@ import { SourceTag } from "../components/SourceTag";
 import { StatusBadge } from "../components/StatusBadge";
 import { ScoreBreakdown } from "../components/ScoreBreakdown";
 import { AnimatedNumber } from "../components/AnimatedNumber";
+import { Skeleton } from "../components/Skeleton";
 import { ExplainSignal } from "../features/airport-detail/ExplainSignal";
 import { STATUS_COLOR, VISIBILITY_LABEL_PT } from "../utils/status";
+import { formatCount } from "../utils/format";
+import { trafficDataStatus, weatherDataStatus } from "../utils/dataStatus";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
 import type { useTrafficSignals } from "../features/traffic/useTrafficSignals";
 
@@ -27,7 +30,8 @@ export function AirportDetail({ weather, traffic }: Props) {
   if (!airport) {
     return (
       <section className="mx-auto max-w-3xl px-6 py-16">
-        <p className="text-muted">Código de aeroporto desconhecido: "{iata}".</p>
+        <p className="text-xs uppercase tracking-wider text-attention">Aeroporto não encontrado</p>
+        <p className="mt-2 text-muted">Código de aeroporto desconhecido: "{iata}".</p>
         <Link to="/" className="mt-4 inline-block text-sm text-accent hover:underline">
           ← Voltar para a visão geral
         </Link>
@@ -38,6 +42,8 @@ export function AirportDetail({ weather, traffic }: Props) {
   const signal = signals[airport.iata];
   const hasRealHistory = history.status === "ready" && history.points.length >= 2;
   const trendTimeline = hasRealHistory ? history.points : signal.timeline;
+  const weatherStatus = weatherDataStatus(signal.weather);
+  const trafficStatus = trafficDataStatus(signal.traffic);
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
@@ -66,7 +72,7 @@ export function AirportDetail({ weather, traffic }: Props) {
           <div className="text-right">
             <StatusBadge status={signal.status} />
             <div className="mt-2">
-              <SourceTag source={signal.weather.source} label="AeroPulse Engine" />
+              <SourceTag {...weatherStatus} label="AeroPulse Engine" />
             </div>
           </div>
         </div>
@@ -107,12 +113,22 @@ export function AirportDetail({ weather, traffic }: Props) {
           <div>
             <p className="text-xs uppercase tracking-wider text-muted">Tendência</p>
             <p className="text-[11px] text-muted">
-              {hasRealHistory ? "Últimas 24h, capturado a cada 30 min" : "Exemplo ilustrativo, não é dado real"}
+              {history.status === "loading"
+                ? "Carregando histórico…"
+                : hasRealHistory
+                  ? "Últimas 24h, capturado a cada 30 min"
+                  : "Exemplo ilustrativo, não é dado real"}
             </p>
           </div>
-          <SourceTag source={hasRealHistory ? "live" : "mock"} label="Histórico" />
+          {history.status !== "loading" && (
+            <SourceTag source={hasRealHistory ? "live" : "mock"} stale={false} label="Histórico" />
+          )}
         </div>
-        <TrendChart timeline={trendTimeline} status={signal.status} />
+        {history.status === "loading" ? (
+          <Skeleton className="mt-4 h-[200px] w-full" />
+        ) : (
+          <TrendChart timeline={trendTimeline} status={signal.status} />
+        )}
       </section>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -122,8 +138,15 @@ export function AirportDetail({ weather, traffic }: Props) {
         >
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-wider text-muted">Clima</p>
-            <SourceTag source={signal.weather.source} label="Open-Meteo" />
+            <SourceTag {...weatherStatus} label="Open-Meteo" />
           </div>
+          {signal.weather.source === "mock" && (
+            <p className="mt-1 text-[11px] text-muted">
+              {weather.status === "syncing"
+                ? "Sincronizando dados ao vivo…"
+                : "Não foi possível atualizar os dados do clima. Mostrando valores de exemplo."}
+            </p>
+          )}
           <dl className="mt-4 grid grid-cols-3 gap-4">
             <div>
               <dt className="text-[11px] text-muted">Chuva</dt>
@@ -146,11 +169,25 @@ export function AirportDetail({ weather, traffic }: Props) {
         >
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-wider text-muted">Tráfego aéreo</p>
-            <SourceTag source={signal.traffic.source} label="OpenSky" />
+            <SourceTag {...trafficStatus} label="OpenSky" />
           </div>
+          {signal.traffic.source === "mock" && (
+            <p className="mt-1 text-[11px] text-muted">
+              {traffic.status === "syncing"
+                ? "Sincronizando dados ao vivo…"
+                : "Não foi possível atualizar os dados de tráfego. Mostrando valores de exemplo."}
+            </p>
+          )}
+          {trafficStatus.source === "unavailable" && (
+            <p className="mt-1 text-[11px] text-muted">
+              Sem leitura recente de tráfego para este aeroporto.
+            </p>
+          )}
           <dl className="mt-4">
             <dt className="text-[11px] text-muted">Aeronaves observadas (raio de 50km)</dt>
-            <dd className="text-lg font-medium text-foreground">{signal.traffic.observedAircraft}</dd>
+            <dd className="text-lg font-medium text-foreground">
+              {formatCount(signal.traffic.observedAircraft)}
+            </dd>
           </dl>
         </div>
       </div>

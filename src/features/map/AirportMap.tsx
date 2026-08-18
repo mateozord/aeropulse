@@ -11,10 +11,13 @@ type Props = {
   statusByIata: Record<string, AeroPulseStatus>;
   selectedIata: string | null;
   onSelect: (iata: string) => void;
+  /** When set, only airports in this set render a marker (status filters). Omit/null shows all. */
+  visibleIata?: Set<string> | null;
 };
 
-export function AirportMap({ statusByIata, selectedIata, onSelect }: Props) {
+export function AirportMap({ statusByIata, selectedIata, onSelect, visibleIata }: Props) {
   const [tilesUnavailable, setTilesUnavailable] = useState(false);
+  const [tilesLoaded, setTilesLoaded] = useState(false);
   const mapRef = useRef<MapRef>(null);
 
   useEffect(() => {
@@ -23,6 +26,8 @@ export function AirportMap({ statusByIata, selectedIata, onSelect }: Props) {
     if (!airport) return;
     mapRef.current?.flyTo({ center: [airport.lon, airport.lat], zoom: 6, duration: 800 });
   }, [selectedIata]);
+
+  const visibleAirports = visibleIata ? AIRPORTS.filter((a) => visibleIata.has(a.iata)) : AIRPORTS;
 
   return (
     <div className="relative h-full w-full">
@@ -35,8 +40,9 @@ export function AirportMap({ statusByIata, selectedIata, onSelect }: Props) {
         attributionControl={{ compact: true }}
         style={{ width: "100%", height: "100%" }}
         onError={() => setTilesUnavailable(true)}
+        onLoad={() => setTilesLoaded(true)}
       >
-        {AIRPORTS.map((airport) => (
+        {visibleAirports.map((airport) => (
           <Marker key={airport.iata} longitude={airport.lon} latitude={airport.lat} anchor="center">
             <AirportMarker
               iata={airport.iata}
@@ -47,6 +53,12 @@ export function AirportMap({ statusByIata, selectedIata, onSelect }: Props) {
           </Marker>
         ))}
       </Map>
+
+      {!tilesLoaded && !tilesUnavailable && (
+        <div className="absolute inset-0 flex items-center justify-center bg-base">
+          <p className="animate-breathe text-xs uppercase tracking-wider text-muted">Carregando mapa…</p>
+        </div>
+      )}
 
       {tilesUnavailable && (
         <div className="pointer-events-none absolute left-3 top-3 rounded border border-border bg-surface-raised px-3 py-1.5 text-xs text-attention">

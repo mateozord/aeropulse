@@ -10,6 +10,8 @@ type Props = {
 };
 
 export function SyncCard({ title, status, lastUpdated, onRefresh }: Props) {
+  const failed = status === "error";
+
   return (
     <div className="flex items-center justify-between gap-4">
       <div>
@@ -18,10 +20,15 @@ export function SyncCard({ title, status, lastUpdated, onRefresh }: Props) {
           <p className="mt-1 text-sm font-medium text-accent">Sincronizando…</p>
         )}
         {lastUpdated && (
-          <p className="mt-1 font-mono text-lg tabular-nums text-foreground">{formatTime(lastUpdated)}</p>
+          <>
+            <p className="mt-1 font-mono text-lg tabular-nums text-foreground">{formatTime(lastUpdated)}</p>
+            {failed && (
+              <p className="mt-0.5 text-[11px] text-elevated">Falha ao atualizar · mostrando último dado</p>
+            )}
+          </>
         )}
-        {status === "error" && !lastUpdated && (
-          <p className="mt-1 text-sm font-medium text-elevated">Indisponível</p>
+        {failed && !lastUpdated && (
+          <p className="mt-1 text-sm font-medium text-elevated">Fonte de dados indisponível</p>
         )}
       </div>
       <button

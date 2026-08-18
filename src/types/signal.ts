@@ -11,8 +11,15 @@ export type WeatherSignal = {
   fetchedAt?: string; // ISO timestamp, only set when source is "live"
 };
 
+// "available" = we have a real recent count (0 aircraft is a legitimate
+// reading, not missing data). "stale" = the most recent known count is older
+// than expected for the capture cadence. "unavailable" = no recent count
+// exists at all — never silently treated as 0.
+export type TrafficAvailability = "available" | "stale" | "unavailable";
+
 export type TrafficSignal = {
-  observedAircraft: number;
+  observedAircraft: number | null; // null only when availability is "unavailable"
+  availability: TrafficAvailability;
   source: "live" | "mock";
   fetchedAt?: string; // ISO timestamp, only set when source is "live"
 };

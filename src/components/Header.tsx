@@ -10,7 +10,9 @@ const NAV_ITEMS = [
   { to: "/about", label: "Sobre" },
 ];
 
-export function Header({ live }: { live: boolean }) {
+type LiveState = "fresh" | "stale" | "mock";
+
+export function Header({ liveState }: { liveState: LiveState }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -20,7 +22,7 @@ export function Header({ live }: { live: boolean }) {
           AEROPULSE
         </NavLink>
 
-        <nav className="hidden gap-8 md:flex">
+        <nav className="hidden gap-6 lg:flex">
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}
@@ -40,13 +42,19 @@ export function Header({ live }: { live: boolean }) {
         <div className="flex items-center gap-4">
           <div
             className={`flex items-center gap-2 text-xs uppercase tracking-wider ${
-              live ? "text-accent" : "text-attention"
+              liveState === "fresh" ? "text-accent" : liveState === "stale" ? "text-attention" : "text-muted"
             }`}
           >
             <span
-              className={`h-1.5 w-1.5 rounded-full ${live ? "animate-breathe bg-accent" : "bg-attention"}`}
+              className={`h-1.5 w-1.5 rounded-full ${
+                liveState === "fresh"
+                  ? "animate-breathe bg-accent"
+                  : liveState === "stale"
+                    ? "bg-attention"
+                    : "bg-muted"
+              }`}
             />
-            {live ? "Ao vivo" : "Dados simulados"}
+            {liveState === "fresh" ? "Ao vivo" : liveState === "stale" ? "Desatualizado" : "Dados simulados"}
           </div>
 
           <button
@@ -54,7 +62,7 @@ export function Header({ live }: { live: boolean }) {
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
             aria-expanded={menuOpen}
-            className="text-muted hover:text-foreground md:hidden"
+            className="text-muted hover:text-foreground lg:hidden"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               {menuOpen ? (
@@ -68,7 +76,7 @@ export function Header({ live }: { live: boolean }) {
       </div>
 
       {menuOpen && (
-        <nav className="flex flex-col border-t border-border px-6 py-4 md:hidden">
+        <nav className="flex flex-col border-t border-border px-6 py-4 lg:hidden">
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}
