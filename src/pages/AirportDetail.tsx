@@ -9,7 +9,7 @@ import { ScoreBreakdown } from "../components/ScoreBreakdown";
 import { AnimatedNumber } from "../components/AnimatedNumber";
 import { Skeleton } from "../components/Skeleton";
 import { ExplainSignal } from "../features/airport-detail/ExplainSignal";
-import { STATUS_COLOR, VISIBILITY_LABEL_PT } from "../utils/status";
+import { STATUS_COLOR, STATUS_LABEL_PT, VISIBILITY_LABEL_PT } from "../utils/status";
 import { formatCount } from "../utils/format";
 import { trafficDataStatus, weatherDataStatus } from "../utils/dataStatus";
 import type { useWeatherSignals } from "../features/weather/useWeatherSignals";
@@ -97,9 +97,9 @@ export function AirportDetail({ weather, traffic }: Props) {
             iata: airport.iata,
             city: airport.city,
             score: signal.score,
-            status: signal.status,
+            status: STATUS_LABEL_PT[signal.status],
             drivers: signal.drivers,
-            weather: signal.weather,
+            weather: { ...signal.weather, visibility: VISIBILITY_LABEL_PT[signal.weather.visibility] },
             traffic: signal.traffic,
           }}
         />
